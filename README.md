@@ -416,6 +416,7 @@ ________________________________________
 		•Docker Image (Cloudflare): https://hub.docker.com/r/cloudflare/goflow
 		•Setup Example: https://dev.to/midzer/netflow-with-cloudflare-goflow2-17hc
 ________________________________________
+
 🔹 2. Apache Kafka (Confluent)
 		•Kafka Overview: https://kafka.apache.org/intro
 		•Dockerized Kafka Setup (Confluent Platform): https://docs.confluent.io/platform/current/quickstart/ce-docker-quickstart.html
