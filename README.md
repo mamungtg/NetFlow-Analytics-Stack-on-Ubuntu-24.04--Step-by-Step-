@@ -9,13 +9,12 @@ End-to-End NetFlow Analytics with MikroTik + Prometheus + Grafana in Docker (Ubu
 2.	Kafka + Zookeeper: Message broker for flow messages
 3.	netflow-consumer: Python service, parses Kafka topic and writes to InfluxDB
 4.	InfluxDB 1.8: Time-series database
-5.	Grafana: Visualization (external or local)
-Briefs:
-•	goflow2 — UDP/2055 collector that parses NetFlow v9/IPFIX and publishes JSON to Kafka (flow-messages).
-•	Kafka + Zookeeper — message broker (single broker mode for simplicity).
-•	netflow-consumer (Python) — subscribes to Kafka, converts records to Influx line protocol, writes to InfluxDB.
-•	InfluxDB 1.8 — time-series storage for flows.
-•	Grafana — dashboards (local or remote).
+5.	Grafana: Visualization (external or local)Briefs:
+			•	goflow2 — UDP/2055 collector that parses NetFlow v9/IPFIX and publishes JSON to Kafka (flow-messages).
+			•	Kafka + Zookeeper — message broker (single broker mode for simplicity).
+			•	netflow-consumer (Python) — subscribes to Kafka, converts records to Influx line protocol, writes to InfluxDB.
+			•	InfluxDB 1.8 — time-series storage for flows.
+			•	Grafana — dashboards (local or remote).
 ________________________________________
 0)	Prep the host
 
