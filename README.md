@@ -24,10 +24,10 @@ ________________________________________
 1)	If you use UFW:
 
 	sudo ufw allow 22/tcp
-sudo ufw allow 2055/udp         # NetFlow from router
-sudo ufw allow 3000/tcp         # Grafana + Prometheus
-sudo ufw allow 8086/tcp         # InfluxDB (optional; keep internal if possible)
-sudo ufw enable
+	sudo ufw allow 2055/udp         # NetFlow from router
+	sudo ufw allow 3000/tcp         # Grafana + Prometheus
+	sudo ufw allow 8086/tcp         # InfluxDB (optional; keep internal if possible)
+	sudo ufw enable
 
 2)	Kernel buffers for heavy UDP:
 
