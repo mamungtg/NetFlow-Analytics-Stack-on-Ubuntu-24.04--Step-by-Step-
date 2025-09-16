@@ -1,4 +1,5 @@
-NetFlow Analytics Stack on Ubuntu 24.04 (Step-by-Step)
+End-to-End NetFlow Analytics with MikroTik + Prometheus + Grafana in Docker (Ubuntu 24.04)
+
    ![Alt text](image5.png)
   
  ![Alt text](image1.png)
