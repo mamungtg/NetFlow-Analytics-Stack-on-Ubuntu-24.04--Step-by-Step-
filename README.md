@@ -176,7 +176,7 @@ python_consumer/requirements.txt
 			influxdb==5.3.1
 			ujson==5.10.0
 			
-	# Dockerfile 
+# Dockerfile 
 	
 			python_consumer/Dockerfile
 			FROM python:3.11-slim
@@ -187,6 +187,8 @@ python_consumer/requirements.txt
 
 			COPY consumer.py .
 			CMD ["python", "/app/consumer.py"]
+			
+# python_consumer/consumer.py
 
 			python_consumer/consumer.py (robust, tolerant of missing keys)
 			import json, os, time, ujson
