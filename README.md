@@ -410,13 +410,13 @@ ________________________________________
 🔹 1. goflow2 (NetFlow/IPFIX Collector)
 
 •	GitHub:
-🔗 https://github.com/cloudflare/goflow
+🔗			 https://github.com/cloudflare/goflow
 
 •	Docker Image (Cloudflare):
-🔗 https://hub.docker.com/r/cloudflare/goflow
+🔗 			https://hub.docker.com/r/cloudflare/goflow
 
 •	Setup Example:
-🔗 https://dev.to/midzer/netflow-with-cloudflare-goflow2-17hc
+🔗 			https://dev.to/midzer/netflow-with-cloudflare-goflow2-17hc
 ________________________________________
 🔹 2. Apache Kafka (Confluent)
 •	Kafka Overview:
