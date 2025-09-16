@@ -23,7 +23,6 @@ ________________________________________
 
 1)	If you use UFW:
 
-			  sudo ufw allow 22/tcp
 			  sudo ufw allow 2055/udp         # NetFlow from router
 			  sudo ufw allow 3000/tcp         # Grafana + Prometheus
 			  sudo ufw allow 8086/tcp         # InfluxDB (optional; keep internal if possible)
@@ -31,41 +30,42 @@ ________________________________________
 
 2)	Kernel buffers for heavy UDP:
 
-echo 'net.core.rmem_default=26214400' | sudo tee -a /etc/sysctl.conf
-echo 'net.core.rmem_max=33554432'     | sudo tee -a /etc/sysctl.conf
-sudo sysctl –p
+			  echo 'net.core.rmem_default=26214400' | sudo tee -a /etc/sysctl.conf
+			  echo 'net.core.rmem_max=33554432'     | sudo tee -a /etc/sysctl.conf
+			  sudo sysctl –p
 
 3)	1) Install Docker Engine + Compose (official repo)
 
-sudo apt -y install ca-certificates curl gnupg
-sudo install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
- 	| sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-echo \
-  	"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
-  https://download.docker.com/linux/ubuntu $(. /etc/os-release; echo $UBUNTU_CODENAME) stable" \
- 	| sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+			  sudo apt -y install ca-certificates curl gnupg
+			  sudo install -m 0755 -d /etc/apt/keyrings
+			  curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+			  | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+			  echo \
+  	          "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+			  https://download.docker.com/linux/ubuntu $(. /etc/os-release; echo $UBUNTU_CODENAME) stable" \
+			  | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-sudo apt update
-sudo apt -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-sudo systemctl enable --now docker
-docker --version
-docker compose version
+			  sudo apt update
+			  sudo apt -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+			  sudo systemctl enable --now docker
+			  docker --version
+			  docker compose version
+			  
 # (optional) run Docker without sudo:
-sudo usermod -aG docker $USER && newgrp docker
+			  sudo usermod -aG docker $USER && newgrp docker
 
 	2) Create project layout
 
- 	sudo mkdir -p /opt/netflow-stack/python_consumer
-	sudo chown -R $USER:$USER /opt/netflow-stack
-	cd /opt/netflow-stack
-
-	/opt/netflow-stack/
-	├─ docker-compose.yml
-	└─ python_consumer/
-	├─ Dockerfile
-	├─ requirements.txt
-	└─ consumer.py
+			  sudo mkdir -p /opt/netflow-stack/python_consumer
+			  sudo chown -R $USER:$USER /opt/netflow-stack
+			  cd /opt/netflow-stack
+			  
+			  /opt/netflow-stack
+			  ├─ docker-compose.yml
+			  └─ python_consumer/
+					├─ Dockerfile
+					├─ requirements.txt
+					└─ consumer.py
 	
 	3) Create docker-compose.yml
 	
