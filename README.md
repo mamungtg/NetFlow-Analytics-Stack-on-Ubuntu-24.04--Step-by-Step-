@@ -34,7 +34,7 @@ ________________________________________
 			  echo 'net.core.rmem_max=33554432'     | sudo tee -a /etc/sysctl.conf
 			  sudo sysctl –p
 
-3)	
+3)	   
 	1. Install Docker Engine + Compose (official repo)
 
 			  sudo apt -y install ca-certificates curl gnupg
@@ -52,7 +52,7 @@ ________________________________________
 			  docker --version
 			  docker compose version
 			  
-# (optional) run Docker without sudo:
+# Run Docker without sudo:
 			  sudo usermod -aG docker $USER && newgrp docker
 
 	2. Create project layout
@@ -70,38 +70,38 @@ ________________________________________
 	
 	3. Create docker-compose.yml
 	
-	Create /opt/netflow-stack/docker-compose.yml with:
+	 Create /opt/netflow-stack/docker-compose.yml with:
 	
-version: "3.9"
-services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.6.1
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    volumes:
-      - zookeeper-data:/var/lib/zookeeper/data
-      - zookeeper-log:/var/lib/zookeeper/log
-    restart: unless-stopped
+			version: "3.9"
+			services:
+			  zookeeper:
+				image: confluentinc/cp-zookeeper:7.6.1
+				environment:
+				  ZOOKEEPER_CLIENT_PORT: 2181
+				  ZOOKEEPER_TICK_TIME: 2000
+				volumes:
+				  - zookeeper-data:/var/lib/zookeeper/data
+				  - zookeeper-log:/var/lib/zookeeper/log
+				restart: unless-stopped
 
-  kafka:
-    image: confluentinc/cp-kafka:7.6.1
-    depends_on:
-      - zookeeper
-    ports:
-      - "9092:9092"     # host access (debug/tools)
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-    volumes:
-      - kafka-data:/var/lib/kafka/data
-    restart: unless-stopped
-
+			  kafka:
+				image: confluentinc/cp-kafka:7.6.1
+				depends_on:
+				  - zookeeper
+				ports:
+				  - "9092:9092"     # host access (debug/tools)
+				environment:
+				  KAFKA_BROKER_ID: 1
+				  KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+				  KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+				  KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+				  KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+				  KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+				  KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+				volumes:
+				  - kafka-data:/var/lib/kafka/data
+				restart: unless-stopped
+				
   # NOTE: Some environments publish the image as cloudflare/goflow (binary: /goflow2).
   # If you see an entrypoint error, switch to image: cloudflare/goflow and keep the same args.
   goflow2:
