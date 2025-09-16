@@ -1,4 +1,4 @@
-End-to-End NetFlow Analytics with MikroTik + Prometheus + Grafana in Docker (Ubuntu 24.04)
+Building a Dockerized NetFlow Analytics Stack: goflow2 + Kafka + InfluxDB + Grafana on Ubuntu 24.04
 
    ![Alt text](image5.png)
   
