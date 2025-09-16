@@ -104,70 +104,70 @@ ________________________________________
 				
   # NOTE: Some environments publish the image as cloudflare/goflow (binary: /goflow2).
   # If you see an entrypoint error, switch to image: cloudflare/goflow and keep the same args.
-  goflow2:
-    image: cloudflare/goflow
-    command: >
-      /goflow2 -loglevel info
-      -transport udp
-      -listen :2055
-      -kafka.brokers kafka:29092
-      -kafka.topic flow-messages
-      -format json
-    ports:
-      - "2055:2055/udp"
-    depends_on:
-      - kafka
-    restart: unless-stopped
+			  goflow2:
+				image: cloudflare/goflow
+				command: >
+				  /goflow2 -loglevel info
+				  -transport udp
+				  -listen :2055
+				  -kafka.brokers kafka:29092
+				  -kafka.topic flow-messages
+				  -format json
+				ports:
+				  - "2055:2055/udp"
+				depends_on:
+				  - kafka
+				restart: unless-stopped
 
-  influxdb:
-    image: influxdb:1.8
-    ports:
-      - "8086:8086"
-    environment:
-      INFLUXDB_DB: netflow
-      INFLUXDB_HTTP_AUTH_ENABLED: "true"
-      INFLUXDB_ADMIN_USER: admin
-      INFLUXDB_ADMIN_PASSWORD: "StrongAdminPass#1"
-      INFLUXDB_USER: netflow
-      INFLUXDB_USER_PASSWORD: "Netflow#Pass1"
-    volumes:
-      - influxdb-data:/var/lib/influxdb
-    restart: unless-stopped
+			  influxdb:
+				image: influxdb:1.8
+				ports:
+				  - "8086:8086"
+				environment:
+				  INFLUXDB_DB: netflow
+				  INFLUXDB_HTTP_AUTH_ENABLED: "true"
+				  INFLUXDB_ADMIN_USER: admin
+				  INFLUXDB_ADMIN_PASSWORD: "StrongAdminPass#1"
+				  INFLUXDB_USER: netflow
+				  INFLUXDB_USER_PASSWORD: "Netflow#Pass1"
+				volumes:
+				  - influxdb-data:/var/lib/influxdb
+				restart: unless-stopped
 
-  netflow-consumer:
-    build: ./python_consumer
-    environment:
-      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      KAFKA_TOPIC: flow-messages
-      CONSUMER_GROUP: netflow-consumer
-      INFLUX_HOST: influxdb
-      INFLUX_PORT: 8086
-      INFLUX_DB: netflow
-      INFLUX_USER: netflow
-      INFLUX_PASSWORD: "Netflow#Pass1"
-    depends_on:
-      - kafka
-      - influxdb
-    restart: unless-stopped
+			  netflow-consumer:
+				build: ./python_consumer
+				environment:
+				  KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+				  KAFKA_TOPIC: flow-messages
+				  CONSUMER_GROUP: netflow-consumer
+				  INFLUX_HOST: influxdb
+				  INFLUX_PORT: 8086
+				  INFLUX_DB: netflow
+				  INFLUX_USER: netflow
+				  INFLUX_PASSWORD: "Netflow#Pass1"
+				depends_on:
+				  - kafka
+				  - influxdb
+				restart: unless-stopped
 
-  grafana:
-    image: grafana/grafana-oss:10.4.3
-    ports:
-      - "3000:3000"
-    environment:
-      GF_SECURITY_ADMIN_PASSWORD: "ChangeMe!Now"
-    volumes:
-      - grafana-data:/var/lib/grafana
-    depends_on:
-      - influxdb
-    restart: unless-stopped
+			  grafana:
+				image: grafana/grafana-oss:10.4.3
+				ports:
+				  - "3000:3000"
+				environment:
+				  GF_SECURITY_ADMIN_PASSWORD: "ChangeMe!Now"
+				volumes:
+				  - grafana-data:/var/lib/grafana
+				depends_on:
+				  - influxdb
+				restart: unless-stopped
 
-volumes:
-  zookeeper-data:
-  zookeeper-log:
-  kafka-data:
-  influxdb-data:
-  grafana-data:
+			volumes:
+			  zookeeper-data:
+			  zookeeper-log:
+			  kafka-data:
+			  influxdb-data:
+			  grafana-data:
 
 4) Python consumer files
 
