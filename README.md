@@ -284,9 +284,9 @@ python_consumer/requirements.txt
 
 5) Start the stack
 
-cd /opt/netflow-stack
-docker compose up -d
-docker compose ps
+			cd /opt/netflow-stack
+			docker compose up -d
+			docker compose ps
  
 ![Alt text](image2.png)
 
@@ -294,8 +294,8 @@ docker compose ps
 
 On your MikroTik:
 
-/ip traffic-flow set enabled=yes
-/ip traffic-flow target add address=<collector_public_or_lan_ip> port=2055 version=9
+			/ip traffic-flow set enabled=yes
+			/ip traffic-flow target add address=<collector_public_or_lan_ip> port=2055 version=9
 
 Make sure your firewall/NAT lets UDP/2055 reach the server’s IP.
 
@@ -305,36 +305,41 @@ On the Ubuntu host:
 
 # 1. Check flow packets from MikroTik
 
-sudo tcpdump -i any port 2055 -n
+			sudo tcpdump -i any port 2055 -n
 
 You should see UDP packets from the router.
  
  ![Alt text](image3.png)
  
 8) Check Kafka
-List topics:
-docker exec -it netflow-stack-kafka-1 kafka-topics --bootstrap-server localhost:9092 --list
-# or inside the container using the service name
-docker exec -it netflow-stack-kafka-1 kafka-topics --bootstrap-server kafka:29092 --list
 
-Read a few messages:
-docker exec -it netflow-stack-kafka-1 kafka-console-consumer \
-  --bootstrap-server kafka:29092 \
-  --topic flow-messages \
-  --from-beginning \
-  --max-messages 5
+			List topics:
+
+			docker exec -it netflow-stack-kafka-1 kafka-topics --bootstrap-server localhost:9092 --list
+			# or inside the container using the service name
+			docker exec -it netflow-stack-kafka-1 kafka-topics --bootstrap-server kafka:29092 --list
+
+			Read a few messages:
+			docker exec -it netflow-stack-kafka-1 kafka-console-consumer \
+			  --bootstrap-server kafka:29092 \
+			  --topic flow-messages \
+			  --from-beginning \
+			  --max-messages 5
 
 If empty, inspect:
 
-docker compose logs goflow2 --tail=100
+			docker compose logs goflow2 --tail=100
 
 9) Check the Python consumer & InfluxDB
-docker compose logs -f netflow-consumer
 
-Confirm there are no write errors. (DB is pre-created via env.)
-Test InfluxDB shell:
-docker exec -it netflow-stack-influxdb-1 influx -execute 'SHOW DATABASES'
-docker exec -it netflow-stack-influxdb-1 influx -database netflow -execute 'SHOW MEASUREMENTS'
+			docker compose logs -f netflow-consumer
+
+			Confirm there are no write errors. (DB is pre-created via env.)
+
+			Test InfluxDB shell:
+
+			docker exec -it netflow-stack-influxdb-1 influx -execute 'SHOW DATABASES'
+			docker exec -it netflow-stack-influxdb-1 influx -database netflow -execute 'SHOW MEASUREMENTS'
 
 10) Connect Grafana
 https://grafana.maltixtech.xyz/login
@@ -358,23 +363,23 @@ ISP CHECK graph under latency
 
 # Status
 
-docker compose ps
-docker compose logs goflow2 --tail=50
-docker compose logs netflow-consumer --tail=50
+			docker compose ps
+			docker compose logs goflow2 --tail=50
+			docker compose logs netflow-consumer --tail=50
 
 # Rebuild just the consumer
 
-docker compose build netflow-consumer
-docker compose up -d netflow-consumer
+			docker compose build netflow-consumer
+			docker compose up -d netflow-consumer
 
 # Restart collector
 
-docker compose restart goflow2
+			docker compose restart goflow2
 
 # Full restart
 
-docker compose down
-docker compose up -d
+			docker compose down
+			docker compose up -d
 
 12) Security & hardening (quick hits)
 •	Keep InfluxDB closed to the internet; expose only inside Docker network if possible.
