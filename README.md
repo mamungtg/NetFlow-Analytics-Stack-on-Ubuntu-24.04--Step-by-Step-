@@ -102,8 +102,8 @@ ________________________________________
 				  - kafka-data:/var/lib/kafka/data
 				restart: unless-stopped
 				
-  # NOTE: Some environments publish the image as cloudflare/goflow (binary: /goflow2).
-  # If you see an entrypoint error, switch to image: cloudflare/goflow and keep the same args.
+# If you see an entrypoint error, switch to image: cloudflare/goflow and keep the same args.
+
 			  goflow2:
 				image: cloudflare/goflow
 				command: >
