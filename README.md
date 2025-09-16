@@ -172,114 +172,115 @@ ________________________________________
 4) Python consumer files
 
 python_consumer/requirements.txt
-kafka-python==2.0.2
-influxdb==5.3.1
-ujson==5.10.0
-python_consumer/Dockerfile
-FROM python:3.11-slim
 
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+			kafka-python==2.0.2
+			influxdb==5.3.1
+			ujson==5.10.0
+			python_consumer/Dockerfile
+			FROM python:3.11-slim
 
-COPY consumer.py .
-CMD ["python", "/app/consumer.py"]
+			WORKDIR /app
+			COPY requirements.txt .
+			RUN pip install --no-cache-dir -r requirements.txt
 
-python_consumer/consumer.py (robust, tolerant of missing keys)
-import json, os, time, ujson
-from kafka import KafkaConsumer
-from influxdb import InfluxDBClient
+			COPY consumer.py .
+			CMD ["python", "/app/consumer.py"]
 
-KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "kafka:29092")
-KAFKA_TOPIC = os.getenv("KAFKA_TOPIC", "flow-messages")
-CONSUMER_GROUP = os.getenv("CONSUMER_GROUP", "netflow-consumer")
+			python_consumer/consumer.py (robust, tolerant of missing keys)
+			import json, os, time, ujson
+			from kafka import KafkaConsumer
+			from influxdb import InfluxDBClient
 
-INFLUX_HOST = os.getenv("INFLUX_HOST", "influxdb")
-INFLUX_PORT = int(os.getenv("INFLUX_PORT", "8086"))
-INFLUX_DB   = os.getenv("INFLUX_DB", "netflow")
-INFLUX_USER = os.getenv("INFLUX_USER", "netflow")
-INFLUX_PASS = os.getenv("INFLUX_PASSWORD", "netflow")
+			KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "kafka:29092")
+			KAFKA_TOPIC = os.getenv("KAFKA_TOPIC", "flow-messages")
+			CONSUMER_GROUP = os.getenv("CONSUMER_GROUP", "netflow-consumer")
 
-def connect_influx():
-    while True:
-        try:
-            c = InfluxDBClient(host=INFLUX_HOST, port=INFLUX_PORT,
-                               username=INFLUX_USER, password=INFLUX_PASS,
-                               timeout=10, retries=3)
-            c.switch_database(INFLUX_DB)
-            return c
-        except Exception as e:
-            print(f"[influx] connect failed: {e}; retrying in 3s")
-            time.sleep(3)
+			INFLUX_HOST = os.getenv("INFLUX_HOST", "influxdb")
+			INFLUX_PORT = int(os.getenv("INFLUX_PORT", "8086"))
+			INFLUX_DB   = os.getenv("INFLUX_DB", "netflow")
+			INFLUX_USER = os.getenv("INFLUX_USER", "netflow")
+			INFLUX_PASS = os.getenv("INFLUX_PASSWORD", "netflow")
 
-def connect_kafka():
-    while True:
-        try:
-            return KafkaConsumer(
-                KAFKA_TOPIC,
-                bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS.split(","),
-                group_id=CONSUMER_GROUP,
-                auto_offset_reset="latest",
-                enable_auto_commit=True,
-                max_poll_interval_ms=300000,
-                consumer_timeout_ms=0,
-                value_deserializer=lambda m: ujson.loads(m.decode("utf-8"))
-            )
-        except Exception as e:
-            print(f"[kafka] connect failed: {e}; retrying in 3s")
-            time.sleep(3)
+			def connect_influx():
+				while True:
+					try:
+						c = InfluxDBClient(host=INFLUX_HOST, port=INFLUX_PORT,
+										   username=INFLUX_USER, password=INFLUX_PASS,
+										   timeout=10, retries=3)
+						c.switch_database(INFLUX_DB)
+						return c
+					except Exception as e:
+						print(f"[influx] connect failed: {e}; retrying in 3s")
+						time.sleep(3)
 
-def to_point(flow):
-    # goflow2 JSON often includes:
-    # SrcAddr, DstAddr, SrcPort, DstPort, Proto, Bytes, Packets, InIf, OutIf, Start, End, SamplerAddress, EType, TCPFlags
-    tags = {
-        "src": flow.get("SrcAddr", ""),
-        "dst": flow.get("DstAddr", ""),
-        "sport": str(flow.get("SrcPort", "")),
-        "dport": str(flow.get("DstPort", "")),
-        "proto": str(flow.get("Proto", "")),
-        "in_if": str(flow.get("InIf", "")),
-        "out_if": str(flow.get("OutIf", "")),
-        "sampler": flow.get("SamplerAddress", ""),
-    }
-    fields = {
-        "bytes": int(flow.get("Bytes", 0)),
-        "packets": int(flow.get("Packets", 0)),
-        "tcp_flags": int(flow.get("TCPFlags", 0)),
-        "etype": int(flow.get("EType", 0)),
-    }
-    # Measurement & point
-    return {
-        "measurement": "flows",
-        "tags": {k:v for k,v in tags.items() if v != "" and v != "None"},
-        "fields": fields
-        # Let InfluxDB timestamp server-side; or add "time" with parsed flow["End"]
-    }
+			def connect_kafka():
+				while True:
+					try:
+						return KafkaConsumer(
+							KAFKA_TOPIC,
+							bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS.split(","),
+							group_id=CONSUMER_GROUP,
+							auto_offset_reset="latest",
+							enable_auto_commit=True,
+							max_poll_interval_ms=300000,
+							consumer_timeout_ms=0,
+							value_deserializer=lambda m: ujson.loads(m.decode("utf-8"))
+						)
+					except Exception as e:
+						print(f"[kafka] connect failed: {e}; retrying in 3s")
+						time.sleep(3)
 
-def main():
-    influx = connect_influx()
-    consumer = connect_kafka()
+			def to_point(flow):
+				# goflow2 JSON often includes:
+				# SrcAddr, DstAddr, SrcPort, DstPort, Proto, Bytes, Packets, InIf, OutIf, Start, End, SamplerAddress, EType, TCPFlags
+				tags = {
+					"src": flow.get("SrcAddr", ""),
+					"dst": flow.get("DstAddr", ""),
+					"sport": str(flow.get("SrcPort", "")),
+					"dport": str(flow.get("DstPort", "")),
+					"proto": str(flow.get("Proto", "")),
+					"in_if": str(flow.get("InIf", "")),
+					"out_if": str(flow.get("OutIf", "")),
+					"sampler": flow.get("SamplerAddress", ""),
+				}
+				fields = {
+					"bytes": int(flow.get("Bytes", 0)),
+					"packets": int(flow.get("Packets", 0)),
+					"tcp_flags": int(flow.get("TCPFlags", 0)),
+					"etype": int(flow.get("EType", 0)),
+				}
+				# Measurement & point
+				return {
+					"measurement": "flows",
+					"tags": {k:v for k,v in tags.items() if v != "" and v != "None"},
+					"fields": fields
+					# Let InfluxDB timestamp server-side; or add "time" with parsed flow["End"]
+				}
 
-    batch = []
-    BATCH_SIZE = 1000
-    last_write = time.time()
+			def main():
+				influx = connect_influx()
+				consumer = connect_kafka()
 
-    for msg in consumer:
-        try:
-            flow = msg.value
-            point = to_point(flow)
-            batch.append(point)
+				batch = []
+				BATCH_SIZE = 1000
+				last_write = time.time()
 
-            if len(batch) >= BATCH_SIZE or (time.time() - last_write) > 2:
-                influx.write_points(batch, time_precision="s", batch_size=BATCH_SIZE)
-                batch.clear()
-                last_write = time.time()
-        except Exception as e:
-            print(f"[consumer] error: {e}")
-            time.sleep(0.5)
+				for msg in consumer:
+					try:
+						flow = msg.value
+						point = to_point(flow)
+						batch.append(point)
 
-if __name__ == "__main__":
-    main()
+						if len(batch) >= BATCH_SIZE or (time.time() - last_write) > 2:
+							influx.write_points(batch, time_precision="s", batch_size=BATCH_SIZE)
+							batch.clear()
+							last_write = time.time()
+					except Exception as e:
+						print(f"[consumer] error: {e}")
+						time.sleep(0.5)
+
+			if __name__ == "__main__":
+				main()
 
 5) Start the stack
 
