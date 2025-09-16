@@ -168,14 +168,7 @@ ________________________________________
 			  influxdb-data:
 			  grafana-data:
 
-4) Python consumer files
-
-python_consumer/requirements.txt
-
-			kafka-python==2.0.2
-			influxdb==5.3.1
-			ujson==5.10.0
-			
+		
 # Dockerfile 
 	
 			python_consumer/Dockerfile
@@ -187,6 +180,14 @@ python_consumer/requirements.txt
 
 			COPY consumer.py .
 			CMD ["python", "/app/consumer.py"]
+			
+4) Python consumer files
+
+# python_consumer/requirements.txt
+
+			kafka-python==2.0.2
+			influxdb==5.3.1
+			ujson==5.10.0
 			
 # python_consumer/consumer.py
 
