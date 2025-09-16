@@ -34,7 +34,8 @@ ________________________________________
 			  echo 'net.core.rmem_max=33554432'     | sudo tee -a /etc/sysctl.conf
 			  sudo sysctl –p
 
-3)	1) Install Docker Engine + Compose (official repo)
+3)	
+	1. Install Docker Engine + Compose (official repo)
 
 			  sudo apt -y install ca-certificates curl gnupg
 			  sudo install -m 0755 -d /etc/apt/keyrings
@@ -54,7 +55,7 @@ ________________________________________
 # (optional) run Docker without sudo:
 			  sudo usermod -aG docker $USER && newgrp docker
 
-	2) Create project layout
+	2. Create project layout
 
 			  sudo mkdir -p /opt/netflow-stack/python_consumer
 			  sudo chown -R $USER:$USER /opt/netflow-stack
@@ -67,7 +68,7 @@ ________________________________________
 					├─ requirements.txt
 					└─ consumer.py
 	
-	3) Create docker-compose.yml
+	3. Create docker-compose.yml
 	
 	Create /opt/netflow-stack/docker-compose.yml with:
 	
