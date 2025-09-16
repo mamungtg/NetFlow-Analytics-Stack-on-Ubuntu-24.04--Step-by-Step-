@@ -175,6 +175,9 @@ python_consumer/requirements.txt
 			kafka-python==2.0.2
 			influxdb==5.3.1
 			ujson==5.10.0
+			
+	# Dockerfile 
+	
 			python_consumer/Dockerfile
 			FROM python:3.11-slim
 
