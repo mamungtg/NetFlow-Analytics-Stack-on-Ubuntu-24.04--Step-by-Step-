@@ -53,8 +53,6 @@ ________________________________________
 			  docker --version
 			  docker compose version
 			  
-# Run Docker without sudo:
-			  sudo usermod -aG docker $USER && newgrp docker
 
 	2. Create project layout
 
