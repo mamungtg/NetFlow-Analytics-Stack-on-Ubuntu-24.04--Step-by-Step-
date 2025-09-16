@@ -18,7 +18,7 @@ ________________________________________
 0)	Prep the host
 
               sudo apt update && sudo apt -y upgrade
-  	sudo timedatectl set-timezone Asia/Dhaka   # optional
+			  sudo timedatectl set-timezone Asia/Dhaka   # optional
 
 1)	If you use UFW:
 
