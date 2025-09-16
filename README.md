@@ -1,5 +1,6 @@
 NetFlow Analytics Stack on Ubuntu 24.04 (Step-by-Step)
-
+   ![Alt text](image5.png)
+  
  ![Alt text](image1.png)
  
 ⚙️ Docker Components
