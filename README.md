@@ -410,65 +410,39 @@ ________________________________________
 
 ### **References**
 
-1. goflow2 (NetFlow/IPFIX Collector):
+🔹 1. goflow2 (NetFlow/IPFIX Collector):
 
 		•GitHub: https://github.com/cloudflare/goflow
 		•Docker Image (Cloudflare): https://hub.docker.com/r/cloudflare/goflow
 		•Setup Example: https://dev.to/midzer/netflow-with-cloudflare-goflow2-17hc
 ________________________________________
 🔹 2. Apache Kafka (Confluent)
-•	Kafka Overview:
-🔗 https://kafka.apache.org/intro
-
-•	Dockerized Kafka Setup (Confluent Platform):
-🔗 https://docs.confluent.io/platform/current/quickstart/ce-docker-quickstart.html
-
-•	Kafka Broker Tuning:
-🔗 https://docs.confluent.io/platform/current/kafka/deployment/production.html
+		•Kafka Overview: https://kafka.apache.org/intro
+		•Dockerized Kafka Setup (Confluent Platform): https://docs.confluent.io/platform/current/quickstart/ce-docker-quickstart.html
+		•Kafka Broker Tuning: https://docs.confluent.io/platform/current/kafka/deployment/production.html
 
 ________________________________________
 🔹 3. Python Kafka Consumer
-•	kafka-python Docs:
-🔗 https://kafka-python.readthedocs.io/en/master/
-
-•	Consumer Example:
-🔗 https://realpython.com/python-mqtt/#using-kafka-python
-
-•	Reconnection Handling Example:
-🔗 https://github.com/dpkp/kafka-python/issues/1791 (handling NoBrokersAvailable)
+		•kafka-python Docs: https://kafka-python.readthedocs.io/en/master/
+		•Consumer Example: https://realpython.com/python-mqtt/#using-kafka-python
+		•Reconnection Handling Example: https://github.com/dpkp/kafka-python/issues/1791 (handling NoBrokersAvailable)
 ________________________________________
 🔹 4. InfluxDB (v1.8)
-•	InfluxDB Docs:
-🔗 https://docs.influxdata.com/influxdb/v1.8/
-
-•	Retention Policy:
-🔗 https://docs.influxdata.com/influxdb/v1.8/query_language/database_management/#retention-policy-management
-
-•	Downsampling with Continuous Queries:
-🔗 https://docs.influxdata.com/influxdb/v1.8/query_language/continuous_queries/
+		•InfluxDB Docs: https://docs.influxdata.com/influxdb/v1.8/
+		•Retention Policy: https://docs.influxdata.com/influxdb/v1.8/query_language/database_management/#retention-policy-management
+		•Downsampling with Continuous Queries: https://docs.influxdata.com/influxdb/v1.8/query_language/continuous_queries/
 ________________________________________
 🔹 5. Grafana + InfluxDB Integration
-•	Grafana InfluxDB Setup:
-🔗 https://grafana.com/docs/grafana/latest/datasources/influxdb/
-
-•	NetFlow Dashboards (Community examples):
-🔗 https://grafana.com/grafana/dashboards/?search=netflow
-
-•	JSON Dashboard Import/Export:
-🔗 https://grafana.com/docs/grafana/latest/dashboards/export-import/
+		•Grafana InfluxDB Setup: https://grafana.com/docs/grafana/latest/datasources/influxdb/
+		•NetFlow Dashboards (Community examples): https://grafana.com/grafana/dashboards/?search=netflow
+		•JSON Dashboard Import/Export: https://grafana.com/docs/grafana/latest/dashboards/export-import/
 ________________________________________
 🔹 6. MikroTik NetFlow Configuration
-•	MikroTik Wiki (Traffic Flow):
-🔗 https://wiki.mikrotik.com/wiki/Manual:IP/Traffic_Flow
-
-•	Sample Setup:
-🔗 https://blog.apnic.net/2022/09/07/using-netflow-from-mikrotik-with-grafana/
+		•MikroTik Wiki (Traffic Flow): https://wiki.mikrotik.com/wiki/Manual:IP/Traffic_Flow
+		•Sample Setup: https://blog.apnic.net/2022/09/07/using-netflow-from-mikrotik-with-grafana/
 ________________________________________
 🛠️ Bonus – System Tuning for High NetFlow Load
-•	Linux UDP Buffer Tuning:
-🔗 https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt
-
-•	Kafka Performance Tips:
-🔗 https://www.confluent.io/blog/kafka-fastest-messaging-system/
+		•Linux UDP Buffer Tuning: https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt
+		•Kafka Performance Tips: https://www.confluent.io/blog/kafka-fastest-messaging-system/
 
 
